@@ -33,5 +33,28 @@ python3 tools/test_adapter_contract.py
 ```
 Output: `build/libs/holdattack-forge-1.20.1-1.0.0.jar`. Do not install the source archive. The adapter check requires Python 3 and tests source wiring, not gameplay.
 
+## Release verification / 发布校验
+[v1.0.0](https://github.com/666nima/holdattack/releases/tag/v1.0.0) source commit / 源码提交：`fd060cc679adb9dddc8872b6c3d5ba7798fd0ef9`。
+
+Release asset / 发布附件：`holdattack-forge-1.20.1-1.0.0.jar`
+
+SHA-256: `076fa80ea364232f667c3241ea72ca360fe263c9a87b325c405925c63e8d997d`
+
+Verify the downloaded file / 校验下载文件：
+```powershell
+Get-FileHash .\holdattack-forge-1.20.1-1.0.0.jar -Algorithm SHA256
+```
+```sh
+sha256sum holdattack-forge-1.20.1-1.0.0.jar
+```
+The commit identifies the release source; the hash identifies the published JAR. These provide traceability, not proof that rebuilding produces byte-identical output. / 提交用于追溯源码，哈希用于核对发布 JAR；这不证明重新构建会得到字节完全相同的产物。
+
+The minimal CI runs the wrapper build (including `check` → `policyTest`) and the Python adapter check, then uploads a build JAR as a CI artifact, not a release asset. It does not launch or test Minecraft, verify gameplay or establish compatibility/stability. / 最小 CI 执行 wrapper 构建（包含 `check` → `policyTest`）与 Python adapter 检查，上传的 JAR 仅为 CI 构建工件，不是发布附件；不启动或测试游戏，不证明玩法、兼容性或稳定性。
+
+## Report an issue / 问题反馈
+Use [GitHub Issues](https://github.com/666nima/holdattack/issues). Include Minecraft, Forge, Java and mod versions; relevant mods; singleplayer or multiplayer; reproduction steps; expected/actual behavior; and relevant `latest.log` or crash-report excerpts. / 请附游戏、Forge、Java、本模组版本，相关模组，单人或联机环境，复现步骤、预期与实际表现，以及相关日志片段。
+
+Before posting logs/screenshots, redact account names/IDs, server IPs, local paths, tokens, passwords and other personal information. Do not upload credentials or an entire instance/world. / 公开日志或截图前，请脱敏账号与标识、服务器 IP、本机路径、令牌、密码及其他个人信息；不要上传凭据或整个实例/存档。
+
 ## License / 许可
 Original mod source and resources: **BSD-3-Clause**, copyright **666nima**; see `LICENSE`. Gradle wrapper components retain their original **Apache-2.0** license and copyright; see `THIRD_PARTY_NOTICES.md` and `LICENSES/Apache-2.0.txt`. Build dependencies and Minecraft are not relicensed or bundled as mod source.

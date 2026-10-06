@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Build and policy tests
+        run: sh ./gradlew clean build reobfJar --no-daemon --console=plain
+      - name: Static adapter contract
+        run: python tools/test_adapter_contract.py
+      - uses: actions/upload-artifact@v7
+        with:
+          name: holdattack-ci-jar
+          path: build/libs/holdattack-forge-1.20.1-1.0.0.jar
+          if-no-files-found: error
+          retention-days: 7
